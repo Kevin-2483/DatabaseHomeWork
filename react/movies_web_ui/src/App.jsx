@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
+  Modal,
   Flex,
   Button,
   DatePicker,
@@ -16,12 +17,14 @@ const App = () => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
   const [dataServer, setDataServer] = useState(
     storedDataServer == null ? "http://127.0.0.1:3000" : storedDataServer
   );
   const [search, setSearch] = useState(null);
   const [open, setOpen] = useState(false);
   const { Search } = Input;
+  const [isModalOpen, setIsModalOpen] = useState(false);
   useEffect(() => {
     localStorage.setItem("myDataServer", dataServer);
   }, [dataServer]);
@@ -56,11 +59,63 @@ const App = () => {
   }, [open, search]);
 
   if (loading) {
-    return <p>Loading...</p>;
+    return (
+      <>
+        <p>Loading...</p>
+        <Button type="primary" onClick={() => setIsModalOpen(true)}>
+          Open Modal
+        </Button>
+        <Modal
+          title="Server URL"
+          open={isModalOpen}
+          onCancel={() => setIsModalOpen(false)}
+          footer={[
+            <Button
+              key="OK"
+              type="primary"
+              onClick={() => setIsModalOpen(false)}
+            >
+              OK
+            </Button>,
+          ]}
+        >
+          <Input
+            value={dataServer}
+            onChange={(e) => setDataServer(e.target.value)}
+          ></Input>
+        </Modal>
+      </>
+    );
   }
 
   if (error) {
-    return <p>Error: {error.message}</p>;
+    return (
+      <>
+        <p>Error: {error.message}</p>
+        <Button type="primary" onClick={() => setIsModalOpen(true)}>
+          Open Modal
+        </Button>
+        <Modal
+          title="Server URL"
+          open={isModalOpen}
+          onCancel={() => setIsModalOpen(false)}
+          footer={[
+            <Button
+              key="OK"
+              type="primary"
+              onClick={() => setIsModalOpen(false)}
+            >
+              OK
+            </Button>,
+          ]}
+        >
+          <Input
+            value={dataServer}
+            onChange={(e) => setDataServer(e.target.value)}
+          ></Input>
+        </Modal>
+      </>
+    );
   }
 
   const showDrawer = () => {
@@ -69,7 +124,7 @@ const App = () => {
   const onClose = () => {
     setOpen(false);
   };
-   
+
   const onFinish = async (values) => {
     console.log("Success:", values);
     try {
@@ -105,9 +160,9 @@ const App = () => {
     console.log("Failed:", errorInfo);
   };
   const { TextArea } = Input;
-  
+
   const openInNewTab = (url) => {
-    const newWindow = window.open(url, '_blank');
+    const newWindow = window.open(url, "_blank");
     if (newWindow) {
       newWindow.opener = null; // 防止新标签页访问父页面
     }
@@ -118,7 +173,6 @@ const App = () => {
       title: "EventID",
       dataIndex: "key",
       key: "key",
-      
     },
     {
       title: "movie_name",
@@ -204,12 +258,7 @@ const App = () => {
         Open
       </Button>
 
-      <Drawer
-        title="Basic Drawer"
-        placement="right"
-        onClose={onClose}
-        open={open}
-      >
+      <Drawer title="Form" placement="right" onClose={onClose} open={open}>
         <h4>Server URL:</h4>
         <Input
           value={dataServer}
