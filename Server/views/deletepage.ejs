@@ -1,0 +1,428 @@
+<!-- views/index.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <title>Database Records</title>
+
+    <style>
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th,
+        td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        a {
+            text-decoration: underline;
+            color: rgb(255, 0, 162);
+            cursor: pointer;
+        }
+
+        img {
+            max-width: 100px;
+            /* 调整图像的最大宽度 */
+            max-height: 100px;
+            /* 调整图像的最大高度 */
+        }
+
+
+        .color-block {
+            width: 20px;
+            height: 20px;
+            display: inline-block;
+            margin-right: 5px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <h1>数据库记录</h1>
+    <h2>media</h2>
+    <div class="table-container">
+        <table border="1">
+            <tr>
+                <th>Media ID</th>
+                <th>URL</th>
+                <th>Caption</th>
+                <th>Credit</th>
+                <th>thumbnail</th>
+                <th>alt</th>
+                <th>title</th>
+                <th>link</th>
+                <th>link_target</th>
+                <!-- 其他列 -->
+            </tr>
+
+            <% mediaResults.forEach(media=> { %>
+                <tr>
+                    <td>
+                        <%= media.mediaID %>
+                    </td>
+                    <td><a href="<%= media.url %>" target="_blank">
+                            <%= media.url %>
+                        </a></td>
+                    <td>
+                        <%= media.caption %>
+                    </td>
+                    <td>
+                        <%= media.credit %>
+                    </td>
+                    <td>
+                        <% if (media.thumbnail) { %>
+                            <img src="<%= media.thumbnail %>" alt="Thumbnail">
+                            <% } else { %>
+                                <!-- 如果没有缩略图链接，可以显示默认图像或其他占位符 -->
+                                No Thumbnail
+                                <% } %>
+                    </td>
+                    <td>
+                        <%= media.alt %>
+                    </td>
+                    <td>
+                        <%= media.title %>
+                    </td>
+                    <td><a href="<%= media.link %>" target="_blank">
+                            <%= media.link %>
+                        </a></td>
+                    <td><a href="<%= media.link_target %>" target="_blank">
+                            <%= media.link_target %>
+                        </a></td>
+                    <!-- 其他列 -->
+                </tr>
+                <% }); %>
+        </table>
+    </div>
+    <h2>background</h2>
+    <div class="table-container">
+        <table>
+            <tr>
+                <th>
+                    Background ID
+                </th>
+                <th>
+                    Background URL
+                </th>
+                <th>
+                    Background alt
+                </th>
+                <th>
+                    background-color
+                </th>
+            </tr>
+            <% backgroundResults.forEach(background=> { %>
+                <tr>
+                    <td>
+                        <%= background.backgroundID %>
+                    </td>
+                    <td>
+                        <% if (background.url) { %>
+                            <img src="<%= background.url %>" alt="url">
+                            <% } else { %>
+                                <!-- 如果没有缩略图链接，可以显示默认图像或其他占位符 -->
+                                No url
+                                <% } %>
+                    </td>
+                    <td>
+                        <%= background.alt %>
+                    </td>
+                    <td>
+                        <% if (background.color) { %>
+                            <div class="color-block" style="background-color: <%= background.color %>"></div>
+                            <%= background.color %>
+                                <% } else { %>
+                                    No Color
+                                    <% } %>
+                    </td>
+                </tr>
+                <% }); %>
+        </table>
+    </div>
+
+    <h2>date</h2>
+    <div class="table-container">
+        <table>
+            <tr>
+                <th>dateID</th>
+                <th>date</th>
+                <th>time</th>
+                <th>display_date</th>
+                <th>format</th>
+            </tr>
+            <% dateResults.forEach(date=> { %>
+                <tr>
+                    <td>
+                        <%= date.dateID %>
+                    </td>
+                    <td>
+                        <%= date.day %>/<%= date.month %>/<%= date.year %>
+                    </td>
+                    <td>
+                        <%= date.hour %>:<%= date.minute %>:<%= date.second %>.<%= date.millisecond %>
+                    </td>
+                    <td>
+                        <%= date.display_date %>
+                    </td>
+                    <td>
+                        <%= date.format %>
+                    </td>
+                </tr>
+                <% }); %>
+        </table>
+    </div>
+
+    <h2>slidesResults</h2>
+    <div class="table-container">
+        <table>
+            <tr>
+                <th>
+                    Slides_unique_id
+                </th>
+                <th>start_date</th>
+                <th>end_date</th>
+                <th>textID</th>
+                <th>mediaID</th>
+                <th>group</th>
+                <th>display_date</th>
+                <th>autolink</th>
+                <th>backgroundID</th>
+            </tr>
+            <% slidesResults.forEach(slidesResults=> { %>
+                <tr>
+                    <td>
+                        <%= slidesResults.Slides_unique_id %>
+                    </td>
+                    <td>
+                        <%= slidesResults.start_date %>
+                    </td>
+                    <td>
+                        <%= slidesResults.end_date %>
+                    </td>
+                    <td>
+                        <%= slidesResults.textID %>
+                    </td>
+                    <td>
+                        <%= slidesResults.mediaID %>
+                    </td>
+                    <td>
+                        <%= slidesResults.group %>
+                    </td>
+                    <td>
+                        <%= slidesResults.display_date %>
+                    </td>
+                    <td>
+                        <%= slidesResults.autolink %>
+                    </td>
+                    <td>
+                        <%= slidesResults.backgroundID %>
+                    </td>
+
+                </tr>
+                <% }); %>
+        </table>
+    </div>
+
+    <h2>text</h2>
+    <div class="table-container">
+        <table>
+            <tr>
+                <th>textID</th>
+                <th>headline</th>
+                <th>text</th>
+
+            </tr>
+            <% textResults.forEach(text=> { %>
+                <tr>
+                    <td>
+                        <%= text.textID %>
+                    </td>
+                    <td>
+                        <%= text.headline %>
+                    </td>
+                    <td>
+                        <%= text.text %>
+                    </td>
+                </tr>
+                <% }); %>
+        </table>
+    </div>
+
+    <h2>event_details</h2>
+    <div class="table-container">
+        <table>
+            <tr>
+                <th>event_detailsID</th>
+                <th>vendor</th>
+                <th>guests</th>
+                <th>details</th>
+
+            </tr>
+            <% detailsResults.forEach(details=> { %>
+                <tr>
+                    <td>
+                        <%= details.slideID %>
+                    </td>
+                    <td>
+                        <%= details.vendor %>
+                    </td>
+                    <td>
+                        <%= details.guests %>
+                    </td>
+                    <td>
+                        <%= details.details %>
+                    </td>
+                </tr>
+                <% }); %>
+        </table>
+    </div>
+
+    <label for="mediaSelect">Media ID:</label>
+    <select id="mediaSelect">
+        <% mediaResults.forEach(media=> { %>
+            <option value="<%= media.mediaID %>">
+                <%= media.mediaID %>
+            </option>
+            <% }); %>
+    </select>
+    <button onclick="deleteRecord('media')">删除</button>
+    <br>
+
+    <label for="backgroundSelect">Background ID:</label>
+    <select id="backgroundSelect">
+        <% backgroundResults.forEach(background=> { %>
+            <option value="<%= background.backgroundID %>">
+                <%= background.backgroundID %>
+            </option>
+            <% }); %>
+    </select>
+    <button onclick="deleteRecord('background')">删除</button>
+    <br>
+
+    <label for="dateSelect">Date ID:</label>
+    <select id="dateSelect">
+        <% dateResults.forEach(date=> { %>
+            <option value="<%= date.dateID %>">
+                <%= date.dateID %>
+            </option>
+            <% }); %>
+    </select>
+    <button onclick="deleteRecord('date')">删除</button>
+    <br>
+
+    <label for="slidesSelect">Slides Unique ID:</label>
+    <select id="slidesSelect">
+        <% slidesResults.forEach(slides=> { %>
+            <option value="<%= slides.Slides_unique_id %>">
+                <%= slides.Slides_unique_id %>
+            </option>
+            <% }); %>
+    </select>
+    <button onclick="deleteRecord('slides')">删除</button>
+    <br>
+
+    <label for="textSelect">textID:</label>
+    <select id="textSelect">
+        <% textResults.forEach(text=> { %>
+            <option value="<%= text.textID %>">
+                <%= text.textID %>
+            </option>
+            <% }); %>
+    </select>
+    <button onclick="deleteRecord('text')">删除</button>
+    <br>
+
+    <label for="event_detailsSelect">event_details_ID:</label>
+    <select id="event_detailsSelect">
+        <% detailsResults.forEach(details=> { %>
+            <option value="<%= details.slideID %>">
+                <%= details.slideID %>
+            </option>
+            <% }); %>
+    </select>
+    <button onclick="deleteRecord('event_details')">删除</button>
+    <br>
+
+</body>
+<script>
+    function deleteRecord(table) {
+        var tableSelect = table + 'Select';
+        var selectedValue = document.getElementById(tableSelect).value;
+
+        // 发送 POST 请求到服务器
+        fetch('/deleteRecord', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                table: table,
+                id: selectedValue,
+            }),
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // 成功更新信息，更新页面显示
+                    Swal.fire({
+                        icon: 'success',
+                        title: '删除成功',
+                        showConfirmButton: true,
+                        //timer: 30000 // 持续显示弹窗的时间（以毫秒为单位）
+                    }).then(() => {
+                        // 用户点击确认按钮后，刷新页面
+                        location.reload();
+                    });
+                } else {
+                    // 处理更新失败的逻辑
+
+                    Swal.fire({
+                        icon: 'error',
+                        title: data.error,
+                        showConfirmButton: true,
+                        //timer: 30000 // 持续显示弹窗的时间（以毫秒为单位）
+                    }).then(() => {
+                        // 用户点击确认按钮后，刷新页面
+                        location.reload();
+                    });
+
+                }
+            })
+            .catch(error => {
+                console.error('删除时发生错误:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: '发生错误，请稍后再试',
+                    showConfirmButton: true,
+                    //timer: 30000 // 持续显示弹窗的时间（以毫秒为单位）
+                }).then(() => {
+                    // 用户点击确认按钮后，刷新页面
+                    location.reload();
+                });
+            });
+
+
+    }
+
+</script>
+
+</html>

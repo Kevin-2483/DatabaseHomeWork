@@ -1,0 +1,312 @@
+<!-- events.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <title>Event Forest</title>
+
+    <style>
+        /* 添加样式，用横线分割不同的树 */
+        .event-container {
+            margin-bottom: 20px;
+            /* 调整树之间的间距 */
+            position: relative;
+            /* 使伪元素相对于 .event-container 定位 */
+        }
+
+        .event-container::after {
+            content: '';
+            /* 添加一个伪元素，用于绘制横线 */
+            display: block;
+            /* 使伪元素变成块级元素 */
+            border-bottom: 1px solid #ccc;
+            /* 添加横线分割 */
+            position: absolute;
+            /* 将伪元素绝对定位 */
+            bottom: -10px;
+            /* 将伪元素位置调整到 .event-container 上方 */
+            left: 0;
+            /* 与左侧对齐 */
+            right: 0;
+            /* 与右侧对齐 */
+        }
+
+        /* 其他样式，不会影响其他 HTML 组件 */
+        .empty {
+            color: blue;
+            /* 设置 '空' 为蓝色 */
+            margin-top: 10px;
+            /* 调整空字的上方间距 */
+        }
+
+        .delete-btn,
+        .add-child-btn {
+            color: red;
+            /* 设置按钮为红色 */
+            cursor: pointer;
+            /* 添加手型光标 */
+            margin-left: 10px;
+            /* 调整按钮之间的间距 */
+        }
+
+        .add-root-btn {
+            color: green;
+            /* 设置按钮为绿色 */
+            cursor: pointer;
+            /* 添加手型光标 */
+            margin-bottom: 10px;
+            /* 调整按钮与树之间的间距 */
+        }
+    </style>
+
+
+</head>
+
+<body>
+    <h1>Event Forest</h1>
+
+    <span class="add-root-btn" onclick="addChildEvent(<%= ' ' %>)">添加根节点</span>
+
+    <% forest.forEach(renderEventTree) %>
+
+        <% function renderEventTree(event) { %>
+            <div class="event-container">
+                <strong>EventID:</strong>
+                <%= event.EventID %>
+                    <br>
+                    <strong>Slide:</strong>
+                    <%= event.slide %>
+                        <br>
+                        <% if (event.children.length===0) { %>
+                            <span class="delete-btn" onclick="deleteEvent(<%= event.EventID %>)">删除</span>
+                            <% } %>
+                                <span class="add-child-btn" onclick="addChildEvent(<%= event.EventID %>)">添加子事件</span>
+                                <br>
+                                <strong>Children:</strong>
+                                <ul>
+                                    <% if (event.children.length===0) { %>
+                                        <li class="empty">空</li>
+                                        <% } else { %>
+                                            <% event.children.forEach(renderEventTree) %>
+                                                <% } %>
+                                </ul>
+            </div>
+            <% } %>
+
+                <script>
+                    function deleteEvent(eventID) {
+                        // 此处添加删除事件的逻辑，可以通过 AJAX 请求或其他方式发送到服务器
+                        console.log('Delete event with ID:', eventID);
+                        // 发送 POST 请求到服务器
+                        fetch('/deleteRecord', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                table: 'events',
+                                id: eventID,
+                            }),
+                        })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    // 成功更新信息，更新页面显示
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: '删除成功',
+                                        showConfirmButton: true,
+                                        //timer: 30000 // 持续显示弹窗的时间（以毫秒为单位）
+                                    }).then(() => {
+                                        // 用户点击确认按钮后，刷新页面
+                                        location.reload();
+                                    });
+                                } else {
+                                    // 处理更新失败的逻辑
+
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: data.error,
+                                        showConfirmButton: true,
+                                        //timer: 30000 // 持续显示弹窗的时间（以毫秒为单位）
+                                    }).then(() => {
+                                        // 用户点击确认按钮后，刷新页面
+                                        location.reload();
+                                    });
+
+                                }
+                            })
+                            .catch(error => {
+                                console.error('删除时发生错误:', error);
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: '发生错误，请稍后再试',
+                                    showConfirmButton: true,
+                                    //timer: 30000 // 持续显示弹窗的时间（以毫秒为单位）
+                                }).then(() => {
+                                    // 用户点击确认按钮后，刷新页面
+                                    location.reload();
+                                });
+                            });
+
+
+
+
+                    }
+
+                    function addChildEvent(parentEventID) {
+                        // 此处添加添加子事件的逻辑，可以显示一个弹窗或其他交互方式
+                        console.log('Add child event to parent event with ID:', parentEventID);
+
+                        // 你要发送的 GET 请求的 URL
+                        const url = '/activitiesmanagement';
+
+                        // 使用 Fetch API 发送 GET 请求
+                        fetch(url, {
+                            method: 'GET',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                        })
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error('Network response was not ok');
+                                }
+                                return response.json();
+                            })
+                            .then(data => {
+                                // 处理响应数据
+                                console.log('GET request successful:', data);
+
+                                // 从服务器接收到数据后创建表单
+                                const slides = data.slides;
+                                const formHTML = `
+                                    <form action="/activitiesmanagement" method="post">
+                                    <label for="selectEvent">Select Event:</label>
+                                    <select id="selectEvent" name="selectEvent" required>
+                                    ${slides.map(slide => `
+                                    <option value="${slide.slideID}">${slide.slideID}</option>
+                                    `).join('')}
+                                    </select>
+                                    <br>
+
+                                    <label for="selectParentEvent">Parent Event:</label>
+                                    <input type="text" id="selectParentEvent" name="selectParentEvent" value= ${parentEventID} readonly required>
+                                    <br>
+
+                                    <label for="scheduleID">Schedule ID:</label>
+                                    <input type="text" id="scheduleID" name="scheduleID" required>
+
+                                    <button type="submit">Submit</button>
+                                    </form>
+                                            `;
+
+                                // 现在你可以使用 formHTML 或将其插入到文档中
+                                // 例如，你可以使用 SweetAlert2 或其他库显示模态框
+                                Swal.fire({
+                                    title: 'Your Form Title',
+                                    html: formHTML,
+                                    showCancelButton: true,
+                                    showConfirmButton: true,
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+
+                                        const selectEvent = document.getElementById('selectEvent').value;
+                                        const selectParentEvent = document.getElementById('selectParentEvent').value;
+                                        const scheduleID = document.getElementById('scheduleID').value;
+                                        
+                                        // 使用 fetch 或其他方式发送 POST 请求到服务器
+                                        fetch('/activitiesmanagement', {
+                                            method: 'POST',
+                                            headers: {
+                                                'Content-Type': 'application/json'
+                                            },
+                                            body: JSON.stringify({
+                                                selectEvent: selectEvent,
+                                                selectParentEvent: selectParentEvent,
+                                                scheduleID: scheduleID
+                                            })
+                                        })
+
+                                            .then(response => response.json())
+                                            .then(data => {
+                                                if (data.success) {
+                                                    // 成功更新信息，更新页面显示
+                                                    Swal.fire({
+                                                        icon: 'success',
+                                                        title: '添加成功',
+                                                        showConfirmButton: true,
+                                                        //timer: 30000 // 持续显示弹窗的时间（以毫秒为单位）
+                                                    }).then(() => {
+                                                        // 用户点击确认按钮后，刷新页面
+                                                        location.reload();
+                                                    });
+                                                } else {
+                                                   
+                                                        Swal.fire({
+                                                            icon: 'error',
+                                                            title: data.error,
+                                                            showConfirmButton: true,
+                                                            //timer: 30000 // 持续显示弹窗的时间（以毫秒为单位）
+                                                        }).then(() => {
+                                                            // 用户点击确认按钮后，刷新页面
+                                                            location.reload();
+                                                        });
+                                                    
+                                                }
+                                            })
+                                            .catch(error => {
+                                                console.error('添加时发生错误:', error);
+                                                Swal.fire({
+                                                    icon: 'error',
+                                                    title: '发生错误，请稍后再试',
+                                                    showConfirmButton: true,
+                                                    //timer: 30000 // 持续显示弹窗的时间（以毫秒为单位）
+                                                }).then(() => {
+                                                    // 用户点击确认按钮后，刷新页面
+                                                    location.reload();
+                                                });
+                                            });
+                                    }
+                                })
+                                    .catch(error => {
+                                        console.error('Error during GET request:', error);
+                                        Swal.fire({
+                                            icon: 'error',
+                                            title: '发生错误，请稍后再试',
+                                            showConfirmButton: true,
+                                            //timer: 30000 // 持续显示弹窗的时间（以毫秒为单位）
+                                        }).then(() => {
+                                            // 用户点击确认按钮后，刷新页面
+                                            location.reload();
+                                        });
+                                    });
+
+                            });
+                    }
+
+                    document.addEventListener('input', function (event) {
+                            // 检查事件目标是否是你感兴趣的表单输入框
+                            //if (event.target.classList.contains('your-input')) {
+                            var inputValue = event.target.value;
+                            var byteCount = new TextEncoder().encode(inputValue).length;
+                            var yourLimit = 250;  // 你的字节数限制
+
+                            // 检查字节数并采取相应的操作
+                            if (byteCount > yourLimit) {
+                                // 超过字节数限制的处理逻辑
+                                alert('超过字节数限制');
+                                // 或者截断输入值
+                                event.target.value = inputValue.substring(0, yourLimit);
+                            }
+                            //}
+                        });
+                </script>
+</body>
+
+</html>

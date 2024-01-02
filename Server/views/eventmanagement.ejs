@@ -1,0 +1,112 @@
+<!-- views/eventForm.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>新增事件</title>
+        <!-- 可以在这里引入样式表和脚本 -->
+</head>
+
+<body>
+        <h1>新增事件</h1>
+        <br>
+        <form action="/eventmanagement" method="post">
+                <!-- 事件开始时间（必填） -->
+                <label for="start_time">事件开始时间：</label>
+                <input type="datetime-local" id="start_time" name="start_time" required>
+                <br>
+                <!-- 时间名称 -->
+                <label for="start_date_display_date">时间名称：</label>
+                <input type="text" id="start_date_display_date" name="start_date_display_date">
+                <br>
+                <!-- 事件结束时间 -->
+                <label for="end_time">事件结束时间：</label>
+                <input type="datetime-local" id="end_time" name="end_time">
+                <br>
+                <!-- 时间名称 -->
+                <label for="end_date_display_date">时间名称：</label>
+                <input type="text" id="end_date_display_date" name="end_date_display_date">
+                <br>
+                <!-- 事件标题 -->
+                <label for="headline">事件标题：</label>
+                <input type="text" id="headline" name="headline">
+                <br>
+                <!-- 事件描述 -->
+                <label for="text">事件描述：</label>
+                <textarea id="text" name="text"></textarea>
+                <br>
+                <!-- 事件封面ID -->
+                <label for="mediaID">事件封面ID：</label>
+                <select id="mediaID" name="mediaID">
+                        <option value="">请选择事件封面ID</option>
+                        <% mediaData.forEach(media=> { %>
+                                <option value="<%= media.mediaID %>">
+                                        <%= media.mediaID %>
+                                </option>
+                                <% }); %>
+                </select>
+                <br>
+                <!-- 事件所属群组 -->
+                <label for="group">事件所属群组：</label>
+                <input type="text" id="group" name="group">
+                <br>
+                <!-- 事件别名 -->
+                <label for="event_display_date">事件别名：</label>
+                <input type="text" id="event_display_date" name="event_display_date">
+                <br>
+                <!-- 自动高亮超链接选项 -->
+                <label for="autoLink">自动高亮超链接选项：</label>
+                <select id="autoLink" name="autoLink">
+                        <option value="1" selected>开</option>
+                        <option value="0">关</option>
+                </select>
+                <br>
+                <!-- 事件背景ID -->
+                <label for="backgroundID">事件背景ID：</label>
+                <select id="backgroundID" name="backgroundID">
+                        <option value="">请选择事件背景ID</option>
+                        <% backgroundData.forEach(background=> { %>
+                                <option value="<%= background.backgroundID %>">
+                                        <%= background.backgroundID %>
+                                </option>
+                                <% }); %>
+                </select>
+                <br>
+                <!-- 事件ID -->
+                <label for="eventID">事件ID：</label>
+                <select id="eventID" name="eventID" required>
+                        <% event_details.forEach(slide=> { %>
+                                <option value="<%= slide.slideID %>">
+                                        <%= slide.slideID %>
+                                </option>
+                                <% }); %>
+                </select>
+                <br>
+                <!-- 其他表单字段，请根据需要添加 -->
+
+                <button type="submit">提交</button>
+        </form>
+        <script>
+                document.addEventListener('input', function (event) {
+                        // 检查事件目标是否是你感兴趣的表单输入框
+                        //if (event.target.classList.contains('your-input')) {
+                        var inputValue = event.target.value;
+                        var byteCount = new TextEncoder().encode(inputValue).length;
+                        var yourLimit = 250;  // 你的字节数限制
+
+                        // 检查字节数并采取相应的操作
+                        if (byteCount > yourLimit) {
+                                // 超过字节数限制的处理逻辑
+                                alert('超过字节数限制');
+                                // 或者截断输入值
+                                event.target.value = inputValue.substring(0, yourLimit);
+                        }
+                        //}
+                });
+        </script>
+</body>
+
+</html>

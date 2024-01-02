@@ -1,0 +1,119 @@
+<!-- eventdetails.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <title>Event Details</title>
+</head>
+
+<body>
+    <h1>Event Details</h1>
+
+    
+    <form id="eventForm">
+        
+        <label for="Slides_unique_id">Slides Unique ID:</label>
+        <input type="text" id="Slides_unique_id" class="limit_input" name="Slides_unique_id" required>
+
+        <label for="vendor">Vendor:</label>
+        <input type="text" class="limit_input" id="vendor" name="vendor" >
+
+        <label for="guests">Guests:</label>
+        <input type="text" class="limit_input" id="guests" name="guests" >
+
+        <label for="details">Details:</label>
+        <input type="text" id="details" name="details" >
+
+        <button type="button" onclick="submitForm()">Submit</button>
+    </form>
+
+    <script>
+        function submitForm() {
+            // 获取表单数据
+            const form = document.getElementById('eventForm');
+            const Slides_unique_id = form.Slides_unique_id.value;
+            const vendor = form.vendor.value;
+            const guests = form.guests.value;
+            const details = form.details.value;
+
+
+            // 发送数据到服务器
+            fetch('/eventdetails', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }, 
+                body: JSON.stringify({
+                    Slides_unique_id : Slides_unique_id, 
+                    vendor : vendor,
+                    guests : guests, 
+                    details : details
+                }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // 成功更新信息，更新页面显示
+                        Swal.fire({
+                            icon: 'success',
+                            title: data.message,
+                            showConfirmButton: true,
+                            //timer: 30000 // 持续显示弹窗的时间（以毫秒为单位）
+                        }).then(() => {
+                            // 用户点击确认按钮后，刷新页面
+                            location.reload();
+                        });
+                    } else {
+                        // 处理更新失败的逻辑
+
+                        Swal.fire({
+                            icon: 'error',
+                            title: data.error,
+                            showConfirmButton: true,
+                            //timer: 30000 // 持续显示弹窗的时间（以毫秒为单位）
+                        }).then(() => {
+                            // 用户点击确认按钮后，刷新页面
+                            location.reload();
+                        });
+
+                    }
+                })
+                .catch(error => {
+                    console.error('添加时发生错误:', error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: '发生错误，请稍后再试',
+                        showConfirmButton: true,
+                        //timer: 30000 // 持续显示弹窗的时间（以毫秒为单位）
+                    }).then(() => {
+                        // 用户点击确认按钮后，刷新页面
+                        location.reload();
+                    });
+                });
+
+        }
+        document.addEventListener('input', function (event) {
+                // 检查事件目标是否是你感兴趣的表单输入框
+                if (event.target.classList.contains('limit_input')) {
+                var inputValue = event.target.value;
+                var byteCount = new TextEncoder().encode(inputValue).length;
+                var yourLimit = 250;  // 你的字节数限制
+
+                // 检查字节数并采取相应的操作
+                if (byteCount > yourLimit) {
+                    // 超过字节数限制的处理逻辑
+                    alert('超过字节数限制');
+                    // 或者截断输入值
+                    event.target.value = inputValue.substring(0, yourLimit);
+                }
+                }
+            });
+    </script>
+</body>
+
+</html>

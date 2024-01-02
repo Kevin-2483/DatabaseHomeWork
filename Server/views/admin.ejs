@@ -1,0 +1,416 @@
+<!-- admin.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+  <title>Admin Page</title>
+</head>
+
+<body>
+  <h1>Admin Page</h1>
+  <!-- 注销表单 -->
+  <!-- 显示当前已登录用户的 ID -->
+  <div>
+    <label for="adminId">已登录的用户ID:</label>
+    <input type="text" id="adminId" name="adminId" value="<%= userId %>" readonly>
+    <button type="button" onclick="showPasswordPrompt()">删除当前用户</button>
+    <br>
+  </div>
+  <!-- 显示 AdminName 和 AdminContact -->
+  <div>
+    <label for="adminName">Admin Name:</label>
+    <input type="text" id="adminName" name="adminName" value="<%= adminName %>" readonly>
+  </div>
+  <div>
+    <label for="adminContact">管理员联系方式:</label>
+    <input type="text" id="adminContact" name="adminContact" value="<%= adminContact %>" readonly>
+  </div>
+  <!-- 修改信息的表单 -->
+  <button id="updateInfoButton">更新信息</button>
+  <!-- 修改密码的表单 -->
+  <button id="changePasswordButton">修改密码</button>
+  
+
+  <!-- 添加新管理员的按钮 -->
+  <button id="addAdminButton">添加新管理员</button>
+
+  <form action="/logout" method="post">
+    <button type="submit">logout</button>
+  </form>
+  <script>
+
+
+    // 处理用户 ID
+    const userId = '<%= userId %>';
+    const adminName = '<%= adminName %>';
+    const adminContact = '<%= adminContact %>';
+
+    function showPasswordPrompt() {
+      Swal.fire({
+        title: '请输入密码',
+        html:
+          '<label for="password">password:</label><br>' +
+          '<input type="text" id="password" name="password" required><br>',
+        showCancelButton: true,
+        confirmButtonText: '确认',
+        cancelButtonText: '取消',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          
+          const password = document.getElementById('password').value;
+
+          // 使用 fetch 或其他方式发送 POST 请求到服务器
+          fetch('/deleteID', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              adminid: '<%= userId %>',
+              password: password
+            })
+          })
+
+            .then(response => response.json())
+            .then(data => {
+              if (data.success) {
+                // 成功更新信息，更新页面显示
+                Swal.fire({
+                  icon: 'success',
+                  title: '删除成功',
+                  showConfirmButton: true,
+                  //timer: 30000 // 持续显示弹窗的时间（以毫秒为单位）
+                }).then(() => {
+                  // 用户点击确认按钮后，刷新页面
+                  location.reload();
+                });
+              } else {
+                // 处理更新失败的逻辑
+                if (data.errorcode === 1) {
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'ID不存在',
+                    showConfirmButton: true,
+                    //timer: 30000 // 持续显示弹窗的时间（以毫秒为单位）
+                  }).then(() => {
+                    // 用户点击确认按钮后，刷新页面
+                    location.reload();
+                  });
+                } else {
+                  Swal.fire({
+                    icon: 'error',
+                    title: '密码错误',
+                    showConfirmButton: true,
+                    //timer: 30000 // 持续显示弹窗的时间（以毫秒为单位）
+                  }).then(() => {
+                    // 用户点击确认按钮后，刷新页面
+                    location.reload();
+                  });
+                }
+              }
+            })
+            .catch(error => {
+              console.error('更新信息时发生错误:', error);
+              Swal.fire({
+                icon: 'error',
+                title: '发生错误，请稍后再试',
+                showConfirmButton: true,
+                //timer: 30000 // 持续显示弹窗的时间（以毫秒为单位）
+              }).then(() => {
+                // 用户点击确认按钮后，刷新页面
+                location.reload();
+              });
+            });
+
+
+
+
+        }
+      });
+    }
+
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+      const shouldShowUpdateInfoPrompt = true; // 标志，表示是否要弹出更新信息的提示框
+
+        // 监听更新信息按钮的点击事件
+      document.getElementById('updateInfoButton').addEventListener('click', function () {
+        // 如果标志为真，则弹出提示框
+        if (shouldShowUpdateInfoPrompt) {
+          Swal.fire({
+            title: '请输入新的信息',
+            html:
+              '<label for="updateAdminName">新的管理员姓名:</label><br>' +
+              '<input type="text" id="updateAdminName" name="updateAdminName" required><br>' +
+              '<label for="updateAdminContact">新的管理员联系方式:</label><br>' +
+              '<input type="text" id="updateAdminContact" name="updateAdminContact" required>',
+            showCancelButton: true,
+            confirmButtonText: '确认',
+            cancelButtonText: '取消',
+          }).then((result) => {
+            if (result.isConfirmed) {
+              // 获取表单输入值
+              const updateAdminName = document.getElementById('updateAdminName').value;
+              const updateAdminContact = document.getElementById('updateAdminContact').value;
+
+              // 检查表单是否填写完整
+              if (!updateAdminName || !updateAdminContact) {
+                Swal.fire({
+                  icon: 'error',
+                  title: '请填写完整信息',
+                  showConfirmButton: true,
+                });
+                return;
+              }
+
+              // 使用 fetch 或其他方式发送 POST 请求到服务器
+              fetch('/update-admin-info', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                  adminid: '<%= userId %>',
+                  updateAdminName: updateAdminName,
+                  updateAdminContact: updateAdminContact
+                })
+              })
+                .then(response => response.json())
+                .then(data => {
+                  if (data.success) {
+                    // 成功更新信息，更新页面显示
+                    Swal.fire({
+                      icon: 'success',
+                      title: '信息更新成功',
+                      showConfirmButton: true,
+                    }).then(() => {
+                      // 用户点击确认按钮后，刷新页面
+                      location.reload();
+                    });
+                  } else {
+                    // 处理更新失败的逻辑
+                    Swal.fire({
+                      icon: 'error',
+                      title: '信息更新失败',
+                      showConfirmButton: true,
+                    }).then(() => {
+                      // 用户点击确认按钮后，刷新页面
+                      location.reload();
+                    });
+                  }
+                })
+                .catch(error => {
+                  console.error('更新信息时发生错误:', error);
+                  Swal.fire({
+                    icon: 'error',
+                    title: '发生错误，请稍后再试',
+                    showConfirmButton: true,
+                  }).then(() => {
+                    // 用户点击确认按钮后，刷新页面
+                    location.reload();
+                  });
+                });
+
+              // 在这里可以继续处理用户输入的新信息
+              console.log('新的管理员姓名:', updateAdminName);
+              console.log('新的管理员联系方式:', updateAdminContact);
+            }
+          });
+        }
+      });
+      
+      document.getElementById('changePasswordButton').addEventListener('click', function () {
+        Swal.fire({
+          title: '更改密码',
+          html:
+            '<label for="password">旧密码:</label><br>' +
+            '<input type="password" id="password" name="password" required><br>' +
+            '<label for="updatePassword">新密码:</label><br>' +
+            '<input type="password" id="updatePassword" name="updatePassword" required><br>' +
+            '<label for="confirmupdatePassword">确认新密码:</label><br>' +
+            '<input type="password" id="confirmupdatePassword" name="confirmupdatePassword" required>',
+          showCancelButton: true,
+          confirmButtonText: '确认',
+          cancelButtonText: '取消',
+          preConfirm: () => {
+            const adminid = userId;
+            const password = document.getElementById('password').value;
+            const updatePassword = document.getElementById('updatePassword').value;
+            const confirmupdatePassword = document.getElementById('confirmupdatePassword').value;
+            
+            // 检查是否有未填写的字段
+            if (!password || !updatePassword || !confirmupdatePassword) {
+              Swal.showValidationMessage('请填写完整的表单');
+            }
+
+            // 检查两次输入的密码是否一致
+            if (updatePassword !== confirmupdatePassword) {
+              Swal.showValidationMessage('密码不一致，请确保两次输入的密码相同');
+            }
+
+            // 返回填写的值
+            return { adminid, password, updatePassword };
+          }
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // 发送 POST 请求到服务器
+            fetch('/update-password', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(result.value)
+            })
+              .then(response => response.json())
+              .then(data => {
+                if (data.success) {
+                  Swal.fire({
+                    icon: 'success',
+                    title: '密码更新成功',
+                    text: '密码已成功更新',
+                  }).then(() => {
+                    // 用户点击确认按钮后，刷新页面
+                    location.reload();
+                  });
+                } else {
+                  // 处理更新失败的逻辑
+                  if (data.errorcode === 1) {
+                    Swal.fire({
+                      icon: 'error',
+                      title: 'ID不存在',
+                      showConfirmButton: true,
+                      //timer: 30000 // 持续显示弹窗的时间（以毫秒为单位）
+                    }).then(() => {
+                      // 用户点击确认按钮后，刷新页面
+                      location.reload();
+                    });
+                  } else {
+                    Swal.fire({
+                      icon: 'error',
+                      title: '密码错误',
+                      showConfirmButton: true,
+                      //timer: 30000 // 持续显示弹窗的时间（以毫秒为单位）
+                    }).then(() => {
+                      // 用户点击确认按钮后，刷新页面
+                      location.reload();
+                    });
+                  }
+                }
+              })
+              .catch(error => {
+                console.error('更改密码时发生错误:', error);
+                Swal.fire({
+                  icon: 'error',
+                  title: '发生错误，请稍后再试',
+                }).then(() => {
+                  // 用户点击确认按钮后，刷新页面
+                  location.reload();
+                });
+              });
+          }
+        });
+      });
+
+      // 监听添加新管理员按钮的点击事件
+      document.getElementById('addAdminButton').addEventListener('click', function () {
+        Swal.fire({
+          title: '添加新管理员',
+          html:
+            '<label for="newAdminId">Admin ID:</label><br>' +
+            '<input type="text" id="newAdminId" name="newAdminId" required><br>' +
+            '<label for="newAdminName">Admin Name:</label><br>' +
+            '<input type="text" id="newAdminName" name="newAdminName" required><br>' +
+            '<label for="newAdminContact">Admin Contact:</label><br>' +
+            '<input type="text" id="newAdminContact" name="newAdminContact" required><br>' +
+            '<label for="newAdminPassword">Password:</label><br>' +
+            '<input type="password" id="newAdminPassword" name="newAdminPassword" required><br>' +
+            '<label for="confirmNewAdminPassword">Confirm Password:</label><br>' +
+            '<input type="password" id="confirmNewAdminPassword" name="confirmNewAdminPassword" required>',
+          showCancelButton: true,
+          confirmButtonText: '确认',
+          cancelButtonText: '取消',
+          preConfirm: () => {
+            const adminId = document.getElementById('newAdminId').value;
+            const adminName = document.getElementById('newAdminName').value;
+            const adminContact = document.getElementById('newAdminContact').value;
+            const adminPassword = document.getElementById('newAdminPassword').value;
+            const confirmAdminPassword = document.getElementById('confirmNewAdminPassword').value;
+
+            // 检查是否有未填写的字段
+            if (!adminId || !adminName || !adminContact || !adminPassword || !confirmAdminPassword) {
+              Swal.showValidationMessage('请填写完整的表单');
+            }
+
+            // 检查两次输入的密码是否一致
+            if (adminPassword !== confirmAdminPassword) {
+              Swal.showValidationMessage('密码不一致，请确保两次输入的密码相同');
+            }
+
+            // 返回填写的值
+            return { adminId, adminName, adminContact, adminPassword };
+          }
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // 发送 POST 请求到服务器
+            fetch('/add-new-admin', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(result.value)
+            })
+              .then(response => response.json())
+              .then(data => {
+                if (data.success) {
+                  Swal.fire({
+                    icon: 'success',
+                    title: '成功添加管理员',
+                    text: '新管理员已成功添加到数据库',
+                  });
+                } else {
+                  Swal.fire({
+                    icon: 'error',
+                    title: '添加失败',
+                    text: '管理员 ID 已存在，请选择其他 ID',
+                  });
+                }
+              })
+              .catch(error => {
+                console.error('添加管理员时发生错误:', error);
+                Swal.fire({
+                  icon: 'error',
+                  title: '发生错误，请稍后再试',
+                });
+              });
+          }
+        });
+      });
+
+    });
+
+    document.addEventListener('input', function (event) {
+        // 检查事件目标是否是你感兴趣的表单输入框
+        //if (event.target.classList.contains('your-input')) {
+        var inputValue = event.target.value;
+        var byteCount = new TextEncoder().encode(inputValue).length;
+        var yourLimit = 250;  // 你的字节数限制
+
+        // 检查字节数并采取相应的操作
+        if (byteCount > yourLimit) {
+          // 超过字节数限制的处理逻辑
+          alert('超过字节数限制');
+          // 或者截断输入值
+          event.target.value = inputValue.substring(0, yourLimit);
+        }
+        //}
+      });
+  </script>
+</body>
+
+</html>

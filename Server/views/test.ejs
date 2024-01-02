@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Timeline</title>
+    <!-- 1 -->
+    <link title="timeline-styles" rel="stylesheet"
+        href="https://cdn.knightlab.com/libs/timeline3/latest/css/timeline.css">
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            padding: 0px;
+            margin: 0px;
+        }
+
+        #timeline-embed {
+            height: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id='timeline'></div>
+    <!-- 2 -->
+    <script src='https://cdn.knightlab.com/libs/timeline3/latest/js/timeline.js'></script>
+
+    <div id='timeline-embed' style='width: 100%; height:10%'></div>
+    <script>
+        // 创建 Timeline
+        const root = '<%= parentEvent %>'
+        const timeline = new TL.Timeline('timeline', 'http://localhost:3000/getjson/'+root);
+    </script>
+    <h1>Event List</h1>
+    <table border="1">
+        <tr>
+            <th>Event Name</th>
+            <th>Vendor</th>
+            <th>Guests</th>
+            <th>Details</th>
+            <th>Actions</th>
+        </tr>
+        <% combinedResults.parentEventDetails.forEach(event=> { %>
+            <tr>
+                <td>
+                    <%= event.slideID %>
+                </td>
+                <td>
+                    <%= event.vendor || '---' %>
+                </td>
+                <td>
+                    <%= event.guests || '---' %>
+                </td>
+                <td>
+                    <%= event.details || '---' %>
+                </td>
+                <td>
+                    <% if (combinedResults.eventsWithChildren.includes(event.EventID)) { %>
+                        <a href="/test/<%= event.EventID %>">
+                            <button>View Children</button>
+                        </a>
+                        <% } else { %>
+                            <!-- Display some other content or an empty cell -->
+                            <% } %>
+                </td>
+            </tr>
+            <% }); %>
+    </table>
+
+
+</body>
+
+</html>

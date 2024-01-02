@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>表单页面</title>
+    <script>
+        function validateForm() {
+            var url = document.getElementById('url').value;
+            var alt = document.getElementById('alt').value;
+            var color = document.getElementById('color').value;
+
+            // 检查至少填写一个字段
+            if (!url && !alt && !color) {
+                alert("至少填写 'URL'、'Alt' 或 'Color' 中的一个。");
+                return false;
+            }
+
+            return true;
+        }
+    </script>
+</head>
+
+<body>
+    <h1>表单页面</h1>
+
+    <form action="/backgroundmanagement" method="post" onsubmit="return validateForm()">
+        <label for="backgroundID">背景 ID：</label>
+        <textarea id="backgroundID" name="backgroundID" required></textarea><br>
+
+        <label for="url">URL：</label>
+        <input type="text" id="url" name="url"><br>
+
+        <label for="alt">Alt：</label>
+        <textarea id="alt" name="alt"></textarea><br>
+
+        <label for="color">颜色：</label>
+        <input type="color" id="color" name="color"><br>
+
+        <button type="submit">提交</button>
+    </form>
+    <script>
+        document.addEventListener('input', function (event) {
+            // 检查事件目标是否是你感兴趣的表单输入框
+            //if (event.target.classList.contains('your-input')) {
+                var inputValue = event.target.value;
+                var byteCount = new TextEncoder().encode(inputValue).length;
+                var yourLimit = 250;  // 你的字节数限制
+
+                // 检查字节数并采取相应的操作
+                if (byteCount > yourLimit) {
+                    // 超过字节数限制的处理逻辑
+                    alert('超过字节数限制');
+                    // 或者截断输入值
+                    event.target.value = inputValue.substring(0, yourLimit);
+                }
+            //}
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,110 @@
+{
+  "title": {
+    "text": {
+      "headline": "<h1>这是事件系统的根目录页</h1>",
+      "text": "<p>滚动来浏览所有事件</p>"
+    }
+  },
+  "events": [
+    {
+      "media": {
+        "url": "https://webstatic.mihoyo.com/upload/op-public/2023/01/13/ff5f7fe208a947bf0c7c0239c54411f4_592291034584067074.mp4",
+        "alt": "一个视频",
+        "title": "成立"
+      },
+      "start_date": {
+        "month": 1,
+        "day": 27,
+        "year": 2011,
+        "hour": 10,
+        "minute": 21,
+        "display_date": "成立"
+      },
+      "text": {
+        "headline": "成立"
+      },
+      "display_date": "成立",
+      "autolink": 1
+    },
+    {
+      "media": {
+        "url": "https://webstatic.mihoyo.com/upload/op-public/2023/01/13/ff5f7fe208a947bf0c7c0239c54411f4_592291034584067074.mp4",
+        "alt": "一个视频",
+        "title": "成立"
+      },
+      "start_date": {
+        "month": 1,
+        "day": 27,
+        "year": 2011,
+        "hour": 10,
+        "minute": 21,
+        "display_date": "成立"
+      },
+      "text": {
+        "headline": "成立"
+      },
+      "display_date": "成立",
+      "autolink": 1
+    },
+    {
+      "media": {
+        "url": "https://webstatic.mihoyo.com/upload/op-public/2023/01/13/ff5f7fe208a947bf0c7c0239c54411f4_592291034584067074.mp4",
+        "alt": "一个视频",
+        "title": "成立"
+      },
+      "start_date": {
+        "month": 1,
+        "day": 27,
+        "year": 2011,
+        "hour": 10,
+        "minute": 21,
+        "display_date": "成立"
+      },
+      "text": {
+        "headline": "成立"
+      },
+      "display_date": "成立",
+      "autolink": 1
+    },
+    {
+      "media": {
+        "url": "https://webstatic.mihoyo.com/upload/op-public/2023/01/13/ff5f7fe208a947bf0c7c0239c54411f4_592291034584067074.mp4",
+        "alt": "一个视频",
+        "title": "成立"
+      },
+      "start_date": {
+        "month": 1,
+        "day": 27,
+        "year": 2011,
+        "hour": 10,
+        "minute": 21,
+        "display_date": "成立"
+      },
+      "text": {
+        "headline": "成立"
+      },
+      "display_date": "成立",
+      "autolink": 1
+    },
+    {
+      "media": {
+        "url": "https://webstatic.mihoyo.com/upload/op-public/2023/01/13/ff5f7fe208a947bf0c7c0239c54411f4_592291034584067074.mp4",
+        "alt": "一个视频",
+        "title": "成立"
+      },
+      "start_date": {
+        "month": 1,
+        "day": 27,
+        "year": 2011,
+        "hour": 10,
+        "minute": 21,
+        "display_date": "成立"
+      },
+      "text": {
+        "headline": "成立"
+      },
+      "display_date": "成立",
+      "autolink": 1
+    }
+  ]
+}

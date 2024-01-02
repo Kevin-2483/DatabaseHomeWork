@@ -1,0 +1,27 @@
+@URL=HTTP://LOCALHOST:3000
+@JSON = Content-Type: application/json
+
+###
+
+GET {{URL}}/test
+
+###
+
+
+###
+
+GET {{URL}}/getjson/
+
+###
+
+
+
+{{JSON}}
+
+post {{URL}}/login
+
+{
+    "adminid": "123456",
+
+    "password": "123456"
+}

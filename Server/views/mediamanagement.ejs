@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Page</title>
+</head>
+
+<body>
+    <h1>Form Page</h1>
+
+    <form action="/mediamanagement" method="post">
+        <label for="url">URL:</label>
+        <textarea id="url" name="url" required></textarea><br>
+
+        <label for="caption">Caption:</label>
+        <textarea id="caption" name="caption"></textarea><br>
+
+        <label for="credit">Credit:</label>
+        <textarea id="credit" name="credit"></textarea><br>
+
+        <label for="thumbnail">Thumbnail:</label>
+        <textarea id="thumbnail" name="thumbnail"></textarea><br>
+
+        <label for="alt">Alt:</label>
+        <textarea id="alt" name="alt"></textarea><br>
+
+        <label for="title">Title:</label>
+        <textarea id="title" name="title"></textarea><br>
+
+        <label for="link">Link:</label>
+        <textarea id="link" name="link"></textarea><br>
+
+        <label for="link_target">Link Target:</label>
+        <textarea id="link_target" name="link_target"></textarea><br>
+
+        <label for="mediaID">封面ID:</label>
+        <input type="text" id="mediaID" name="mediaID" required>
+        <br>
+
+        <button type="submit">Submit</button>
+    </form>
+    <script>
+        document.addEventListener('input', function (event) {
+            // 检查事件目标是否是你感兴趣的表单输入框
+            //if (event.target.classList.contains('your-input')) {
+            var inputValue = event.target.value;
+            var byteCount = new TextEncoder().encode(inputValue).length;
+            var yourLimit = 250;  // 你的字节数限制
+
+            // 检查字节数并采取相应的操作
+            if (byteCount > yourLimit) {
+                // 超过字节数限制的处理逻辑
+                alert('超过字节数限制');
+                // 或者截断输入值
+                event.target.value = inputValue.substring(0, yourLimit);
+            }
+            //}
+        });
+    </script>
+</body>
+
+</html>
