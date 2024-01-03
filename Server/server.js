@@ -10,22 +10,22 @@ const http = require("http");
 const fs = require("fs/promises");
 const cors = require("cors");
 
-
+//创建一个新的Express应用程序
 const app = express();
 const server = http.createServer(app);
 
 
-app.use(cookieParser());
-app.set("view engine", "ejs");
-app.set("views", __dirname + "/views");
-app.use(bodyParser.json());
+app.use(cookieParser());                           //解构cookie
+app.set("view engine", "ejs");                     //渲染测试用web ui, ejs模板引擎
+app.set("views", __dirname + "/views");            //设置模板文件夹
+app.use(bodyParser.json());                        //解析json
 // 启用所有路由的CORS
 app.use(cors());
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout
 });
-
+//询问服务器配置信息,包含数据库连接信息,端口号,token密钥
 function askQuestion(question) {
   return new Promise((resolve) => {
     rl.question(question, resolve);
@@ -239,7 +239,6 @@ async function startServer() {
 
   // 游客登录请求
   app.post("/guest-login", (req, res) => {
-    // // 在实际应用中，你可能会为游客生成一个特定的用户标识，然后创建相应的JWT
     // const user = "guest_" + Math.random().toString(36).substring(7);
 
     // // 生成JWT令牌
@@ -256,8 +255,6 @@ async function startServer() {
 
   // 保护路由，需要在请求头中提供有效的JWT令牌
   app.get("/admin", verifyToken, (req, res) => {
-    // 在这里处理受保护路由的逻辑
-
     connection.query(
       "SELECT AdminName, AdminContact FROM admins WHERE AdminID = ?",
       [req.userId],
@@ -294,7 +291,6 @@ async function startServer() {
   // 登出路由，清除token cookie
   app.post("/logout", (req, res) => {
     res.clearCookie("jwt");
-    // 可以根据需要添加其他登出逻辑
     res.redirect("/login"); // 重定向到登录页或其他页面
   });
 
@@ -1591,7 +1587,7 @@ WHERE (ParentEvent IS NULL AND ? IS NULL) OR (ParentEvent = ? AND EventID IN (
     });
   });
 
-  // 登陆服务启动
+  // 启动服务器
   server.listen(port, () => {
     console.log(
       `服务器已启动，正在监听端口 ${port}，数据库连接信息: ${databaseHost}，喵~`

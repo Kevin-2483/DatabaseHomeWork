@@ -1,69 +1,68 @@
 {
   "title": {
+    "media": {
+      "url": "https://webstatic.mihoyo.com/upload/op-public/2023/01/13/ff5f7fe208a947bf0c7c0239c54411f4_592291034584067074.mp4",
+      "alt": "一个视频",
+      "title": "成立"
+    },
+    "start_date": {
+      "month": 1,
+      "day": 27,
+      "year": 2011,
+      "hour": 10,
+      "minute": 21,
+      "display_date": "成立"
+    },
     "text": {
-      "headline": "<h1>这是事件系统的根目录页</h1>",
-      "text": "<p>滚动来浏览所有事件</p>"
-    }
+      "headline": "成立"
+    },
+    "display_date": "成立",
+    "autolink": 1
   },
   "events": [
     {
       "media": {
-        "url": "https://webstatic.mihoyo.com/upload/op-public/2023/01/13/ff5f7fe208a947bf0c7c0239c54411f4_592291034584067074.mp4",
-        "alt": "一个视频",
-        "title": "成立"
+        "url": "https://webstatic.mihoyo.com/upload/op-public/2021/10/21/35e4609564b506b01e67eaad7a148c6b_1090347207711341997.mp4",
+        "caption": "123456",
+        "thumbnail": "https://webstatic.mihoyo.com/upload/op-public/2021/10/11/320a35c423a3d8ca043d7ee14a8c7925_602536019813937911.png",
+        "alt": "崩坏学园"
       },
       "start_date": {
-        "month": 1,
+        "month": 2,
         "day": 27,
-        "year": 2011,
+        "year": 2012,
         "hour": 10,
-        "minute": 21,
-        "display_date": "成立"
+        "minute": 23
       },
       "text": {
-        "headline": "成立"
+        "headline": "111",
+        "text": "1111"
       },
-      "display_date": "成立",
       "autolink": 1
     },
     {
       "media": {
-        "url": "https://webstatic.mihoyo.com/upload/op-public/2023/01/13/ff5f7fe208a947bf0c7c0239c54411f4_592291034584067074.mp4",
-        "alt": "一个视频",
-        "title": "成立"
+        "url": "https://webstatic.mihoyo.com/upload/op-public/2021/10/03/9ec1205e68959838a18872e71268e399_2717250742320643202.mp4",
+        "caption": "333",
+        "thumbnail": "https://webstatic.mihoyo.com/upload/op-public/2021/10/09/def1f2abcfc2af0bbe2e5900a60a5ee1_5699547505742166353.png",
+        "alt": "genshin",
+        "title": "原神",
+        "link": "https://ys.mihoyo.com/main/"
       },
       "start_date": {
         "month": 1,
         "day": 27,
-        "year": 2011,
+        "year": 2019,
         "hour": 10,
-        "minute": 21,
-        "display_date": "成立"
+        "minute": 26
       },
       "text": {
-        "headline": "成立"
+        "headline": "444",
+        "text": "原神"
       },
-      "display_date": "成立",
-      "autolink": 1
-    },
-    {
-      "media": {
-        "url": "https://webstatic.mihoyo.com/upload/op-public/2023/01/13/ff5f7fe208a947bf0c7c0239c54411f4_592291034584067074.mp4",
-        "alt": "一个视频",
-        "title": "成立"
+      "background": {
+        "color": "#fff7728f"
       },
-      "start_date": {
-        "month": 1,
-        "day": 27,
-        "year": 2011,
-        "hour": 10,
-        "minute": 21,
-        "display_date": "成立"
-      },
-      "text": {
-        "headline": "成立"
-      },
-      "display_date": "成立",
       "autolink": 1
     },
     {
@@ -88,6 +87,28 @@
     },
     {
       "media": {
+        "url": "https://webstatic.mihoyo.com/upload/op-public/2022/05/27/52e560f8e026f41e6a84cf3027bb91ec_5941125512576787727.mp4",
+        "caption": "新饼",
+        "thumbnail": "https://webstatic.mihoyo.com/upload/op-public/2022/05/27/3896559583929f643fbe39ec1d6ca1c9_1026345827445617861.png",
+        "alt": "新饼",
+        "link_target": "https://zzz.mihoyo.com/"
+      },
+      "start_date": {
+        "month": 11,
+        "day": 27,
+        "year": 2023,
+        "hour": 10,
+        "minute": 28,
+        "display_date": "zzz"
+      },
+      "text": {
+        "headline": "新饼",
+        "text": "666"
+      },
+      "autolink": 1
+    },
+    {
+      "media": {
         "url": "https://webstatic.mihoyo.com/upload/op-public/2023/01/13/ff5f7fe208a947bf0c7c0239c54411f4_592291034584067074.mp4",
         "alt": "一个视频",
         "title": "成立"
@@ -104,25 +125,6 @@
         "headline": "成立"
       },
       "display_date": "成立",
-      "autolink": 1
-    },
-    {
-      "media": {
-        "url": "https://webstatic.mihoyo.com/upload/op-public/2021/10/03/264970ed40727e0ee788ec6aa225afbc_8113481436414991345.mp4",
-        "thumbnail": "https://webstatic.mihoyo.com/upload/op-public/2021/10/03/4080f2eb748823d8c38507c3d7b69b36_936817768851375073.png",
-        "title": "honkai 3rd"
-      },
-      "start_date": {
-        "month": 1,
-        "day": 27,
-        "year": 2016,
-        "hour": 10,
-        "minute": 24
-      },
-      "text": {
-        "headline": "崩坏3",
-        "text": "222"
-      },
       "autolink": 1
     }
   ]
