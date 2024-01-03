@@ -505,7 +505,8 @@ export default function AddSlide(props) {
           dataSource={dataSource}
           columns={columns}
           scroll={{
-            x: 2000,
+            x: "20vh",
+            y: "80vh",
           }}
           pagination={{ position: ["topRight"] }}
           style={{ margin: "10px 10px 10px 10px" }}

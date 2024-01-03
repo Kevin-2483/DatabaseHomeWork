@@ -3,12 +3,14 @@ import {
   Space,
   Table,
   FloatButton,
-  Flex,
+  Switch,
   ColorPicker,
   Button,
   Form,
   Input,
-  message, ConfigProvider, theme
+  message,
+  ConfigProvider,
+  theme,
 } from "antd";
 import PropTypes from "prop-types";
 import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
@@ -28,6 +30,7 @@ export default function AddBG(props) {
   const { TextArea } = Input;
   const [colorHex, setColorHex] = useState("#1677ff");
   const [formatHex, setFormatHex] = useState("hex");
+  const [colorEnabled, setColorEnabled] = useState(true);
   const hexString = useMemo(
     () => (typeof colorHex === "string" ? colorHex : colorHex.toHexString()),
     [colorHex]
@@ -112,23 +115,20 @@ export default function AddBG(props) {
   const onFinish = async (values) => {
     console.log("Success:", values);
     try {
-      const response = await fetch(
-        dataServer+"/backgroundmanagement",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`, // 指定请求体类型为 JSON
-            // 如果有其他头部信息，也可以在这里添加
-          },
-          body: JSON.stringify({
-            backgroundID: values.backgroundID,
-            url: values.url,
-            alt: values.alt,
-            color: hexString,
-          }), // 将数据转换为JSON格式
-        }
-      );
+      const response = await fetch(dataServer + "/backgroundmanagement", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // 指定请求体类型为 JSON
+          // 如果有其他头部信息，也可以在这里添加
+        },
+        body: JSON.stringify({
+          backgroundID: values.backgroundID,
+          url: values.url,
+          alt: values.alt,
+          color: colorEnabled ? hexString : "",
+        }), // 将数据转换为JSON格式
+      });
       const jsonData = await response.json();
       console.log(jsonData);
       if (!jsonData.success) {
@@ -226,7 +226,8 @@ export default function AddBG(props) {
           dataSource={dataSource}
           columns={columns}
           scroll={{
-            x: 2000,
+            x: "20vh",
+            y: "80vh",
           }}
           style={{ margin: "10px 10px 10px 10px" }}
         />
@@ -325,6 +326,13 @@ export default function AddBG(props) {
                 },
               ]}
             >
+              <div>
+                <Switch
+                  checked={colorEnabled}
+                  onChange={(checked) => setColorEnabled(checked)}
+                  style={{ margin: "0px 0px 20px 0px" }}
+                />
+              </div>
               <ColorPicker
                 format={formatHex}
                 value={colorHex}
@@ -333,6 +341,7 @@ export default function AddBG(props) {
                 showText={() => {
                   return <span>{hexString}</span>;
                 }}
+                disabled={!colorEnabled}
               />
             </Form.Item>
             <Form.Item

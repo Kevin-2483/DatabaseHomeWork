@@ -245,7 +245,8 @@ export default function AddMedia(props) {
         <Table
           zIndex={1}
           scroll={{
-            x: 2000,
+            x: "20vh",
+            y: "80vh",
           }}
           dataSource={dataSource}
           columns={columns}
@@ -338,7 +339,7 @@ export default function AddMedia(props) {
               <TextArea
                 showCount
                 maxLength={255}
-                placeholder="Please input URL"
+                placeholder="说明文本"
                 autoSize={{
                   minRows: 2,
                   maxRows: 6,
@@ -358,7 +359,7 @@ export default function AddMedia(props) {
               <TextArea
                 showCount
                 maxLength={255}
-                placeholder="Please input URL"
+                placeholder="额外描述或信息"
                 autoSize={{
                   minRows: 2,
                   maxRows: 6,
@@ -378,7 +379,7 @@ export default function AddMedia(props) {
               <TextArea
                 showCount
                 maxLength={255}
-                placeholder="Please input URL"
+                placeholder="小图标"
                 autoSize={{
                   minRows: 2,
                   maxRows: 6,
@@ -398,7 +399,7 @@ export default function AddMedia(props) {
               <TextArea
                 showCount
                 maxLength={255}
-                placeholder="Please input URL"
+                placeholder="替代文本"
                 autoSize={{
                   minRows: 2,
                   maxRows: 6,
@@ -418,7 +419,7 @@ export default function AddMedia(props) {
               <TextArea
                 showCount
                 maxLength={255}
-                placeholder="Please input URL"
+                placeholder="标题"
                 autoSize={{
                   minRows: 2,
                   maxRows: 6,

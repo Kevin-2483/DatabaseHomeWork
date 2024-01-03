@@ -231,8 +231,11 @@ function EventsTree({ dataServer }) {
           showLine
           onSelect={handleSelect}
           onRightClick={rightClick}
-          style={{ margin: "10px 10px 10px 10px", width: "96vw",
-            height: "61vh",}}
+          style={{
+            margin: "10px 10px 10px 10px",
+            width: "96vw",
+            height: "61vh",
+          }}
         />
         <FloatButton.Group
           shape="square"
@@ -316,7 +319,8 @@ function EventsTree({ dataServer }) {
               rules={[
                 {
                   required: true,
-                  message: "Please input a New scheduleID!",
+                  message: "Please input a New scheduleID(number)!",
+                  pattern: /^[1-9]\d*$/,
                 },
               ]}
             >

@@ -236,7 +236,6 @@ async function startServer() {
       });
     })(req, res);
   });
-
   // 游客登录请求
   app.post("/guest-login", (req, res) => {
     // const user = "guest_" + Math.random().toString(36).substring(7);
@@ -252,7 +251,6 @@ async function startServer() {
     // });
     return res.redirect("/test/");
   });
-
   // 保护路由，需要在请求头中提供有效的JWT令牌
   app.get("/admin", verifyToken, (req, res) => {
     connection.query(
@@ -287,13 +285,11 @@ async function startServer() {
     console.log("Request Method:", req.method);
     console.log("Request URL:", req.originalUrl);
   });
-
   // 登出路由，清除token cookie
   app.post("/logout", (req, res) => {
     res.clearCookie("jwt");
     res.redirect("/login"); // 重定向到登录页或其他页面
   });
-
   // 删除用户
   app.post("/deleteID", verifyToken, (req, res, next) => {
     console.log("Full req.body:", req.body);
@@ -331,7 +327,6 @@ async function startServer() {
       });
     })(req, res);
   });
-
   // 更改密码
   app.post("/update-password", verifyToken, (req, res, next) => {
     const { adminid, password, updatePassword } = req.body;
@@ -372,7 +367,6 @@ async function startServer() {
       });
     })(req, res);
   });
-
   //update-admin-info
   app.post("/update-admin-info", verifyToken, (req, res) => {
     const { adminid, updateAdminName, updateAdminContact } = req.body;
@@ -435,7 +429,6 @@ async function startServer() {
       }
     );
   });
-
   // 设置路由，父事件作为可选变量
   app.get("/test/:parentEvent?", (req, res) => {
     let parentEvent = req.params.parentEvent;
@@ -516,7 +509,6 @@ WHERE (ParentEvent IS NULL AND ? IS NULL) OR (ParentEvent = ? AND EventID IN (
       }
     );
   });
-
   app.get("/eventmanagement", verifyToken, function (req, res) {
     console.log("Full req.body:", req.body);
     // 查询 media 表中的所有记录
@@ -565,9 +557,7 @@ WHERE (ParentEvent IS NULL AND ? IS NULL) OR (ParentEvent = ? AND EventID IN (
       });
     });
   });
-
   // post/eventmanagement路由
-
   app.post("/eventmanagement", verifyToken, (req, res) => {
     console.log("Full req.body:", req.body);
 
@@ -716,7 +706,6 @@ WHERE (ParentEvent IS NULL AND ? IS NULL) OR (ParentEvent = ? AND EventID IN (
       }
     });
   });
-
   app.get("/mediamanagement", verifyToken, function (req, res) {
     connection.query("SELECT * FROM media", (error, mediaResults) => {
       if (error) throw error;
@@ -725,7 +714,6 @@ WHERE (ParentEvent IS NULL AND ? IS NULL) OR (ParentEvent = ? AND EventID IN (
       });
     });
   });
-
   app.get("/datemanagement", verifyToken, function (req, res) {
     connection.query("SELECT * FROM date", (error, dateResults) => {
       if (error) throw error;
@@ -734,7 +722,6 @@ WHERE (ParentEvent IS NULL AND ? IS NULL) OR (ParentEvent = ? AND EventID IN (
       });
     });
   });
-
   app.post("/mediamanagement", verifyToken, function (req, res) {
     console.log("Full req.body:", req.body);
 
@@ -808,7 +795,6 @@ WHERE (ParentEvent IS NULL AND ? IS NULL) OR (ParentEvent = ? AND EventID IN (
       );
     });
   });
-
   app.get("/backgroundmanagement", verifyToken, function (req, res) {
     connection.query("SELECT * FROM background", (error, backgroundResults) => {
       if (error) throw error;
@@ -817,7 +803,6 @@ WHERE (ParentEvent IS NULL AND ? IS NULL) OR (ParentEvent = ? AND EventID IN (
       });
     });
   });
-
   app.post("/backgroundmanagement", verifyToken, function (req, res) {
     console.log("Full req.body:", req.body);
 
@@ -870,7 +855,6 @@ WHERE (ParentEvent IS NULL AND ? IS NULL) OR (ParentEvent = ? AND EventID IN (
       }
     );
   });
-
   app.get("/activitiesmanagement", verifyToken, (req, res) => {
     // 查询 events 表的所有记录的 eventID
     const eventsQuery = "SELECT eventID FROM events";
@@ -890,7 +874,6 @@ WHERE (ParentEvent IS NULL AND ? IS NULL) OR (ParentEvent = ? AND EventID IN (
       });
     });
   });
-
   app.post("/activitiesmanagement", verifyToken, function (req, res) {
     console.log("Full req.body:", req.body);
 
@@ -936,7 +919,6 @@ WHERE (ParentEvent IS NULL AND ? IS NULL) OR (ParentEvent = ? AND EventID IN (
       );
     });
   });
-
   // 定义一个递归函数来构建嵌套的 JSON 结构
   async function buildEventJSON(eventID, depth = 0) {
     if (depth > 1) {
@@ -1038,7 +1020,6 @@ WHERE (ParentEvent IS NULL AND ? IS NULL) OR (ParentEvent = ? AND EventID IN (
 
     return Object.keys(eventJSON).length > 0 ? eventJSON : null;
   }
-
   // 递归删除对象中的值为空的字段
   function removeEmptyFields(obj) {
     for (const key in obj) {
@@ -1059,7 +1040,6 @@ WHERE (ParentEvent IS NULL AND ? IS NULL) OR (ParentEvent = ? AND EventID IN (
       }
     }
   }
-
   // // 调用函数开始构建 JSON 结构
   // buildCompleteJSON();
 
@@ -1077,7 +1057,6 @@ WHERE (ParentEvent IS NULL AND ? IS NULL) OR (ParentEvent = ? AND EventID IN (
       });
     });
   }
-
   function getSlideInfo(slideID) {
     // 查询 slides 表中的信息
     return new Promise((resolve, reject) => {
@@ -1091,7 +1070,6 @@ WHERE (ParentEvent IS NULL AND ? IS NULL) OR (ParentEvent = ? AND EventID IN (
       });
     });
   }
-
   function getMediaInfo(mediaID) {
     // 查询 media 表中的信息
     return new Promise((resolve, reject) => {
@@ -1105,7 +1083,6 @@ WHERE (ParentEvent IS NULL AND ? IS NULL) OR (ParentEvent = ? AND EventID IN (
       });
     });
   }
-
   function getDateInfo(dateID) {
     // 查询 date 表中的信息
     return new Promise((resolve, reject) => {
@@ -1119,7 +1096,6 @@ WHERE (ParentEvent IS NULL AND ? IS NULL) OR (ParentEvent = ? AND EventID IN (
       });
     });
   }
-
   function getTextInfo(textID) {
     // 查询 text 表中的信息
     return new Promise((resolve, reject) => {
@@ -1133,7 +1109,6 @@ WHERE (ParentEvent IS NULL AND ? IS NULL) OR (ParentEvent = ? AND EventID IN (
       });
     });
   }
-
   function getBackgroundInfo(backgroundID) {
     // 查询 background 表中的信息
     return new Promise((resolve, reject) => {
@@ -1151,7 +1126,6 @@ WHERE (ParentEvent IS NULL AND ? IS NULL) OR (ParentEvent = ? AND EventID IN (
       );
     });
   }
-
   function getChildEvents(parentEventID) {
     // 查询子事件的 EventID 列表
     return new Promise((resolve, reject) => {
@@ -1173,7 +1147,6 @@ WHERE (ParentEvent IS NULL AND ? IS NULL) OR (ParentEvent = ? AND EventID IN (
       );
     });
   }
-
   // 获取所有根事件的 EventID 列表
   function getRootEventIDs() {
     return new Promise((resolve, reject) => {
@@ -1194,7 +1167,6 @@ WHERE (ParentEvent IS NULL AND ? IS NULL) OR (ParentEvent = ? AND EventID IN (
       );
     });
   }
-
   app.get("/getjson/:root?", async (req, res) => {
     let root = req.params.root;
     console.log(root);
@@ -1221,8 +1193,9 @@ WHERE (ParentEvent IS NULL AND ? IS NULL) OR (ParentEvent = ? AND EventID IN (
         if (filteredRootEvents.length > 0) {
           rootEventJSON = {
             text: {
-              headline: "<h1>这是事件系统的根目录页</h1>",
-              text: "<p>滚动来浏览所有事件</p>",
+              headline:
+                "<h1>这是事件系统的根目录页</h1><br><h1>This is the root directory page of the event system. </h1>",
+              text: "<p>滚动来浏览所有事件</p><br><p>Scroll to browse all events</p>",
             },
             events: filteredRootEvents,
           };
@@ -1256,8 +1229,8 @@ WHERE (ParentEvent IS NULL AND ? IS NULL) OR (ParentEvent = ? AND EventID IN (
               display_date: "空页面在这天被完成",
             },
             text: {
-              headline: "<h1>空</h1>",
-              text: "<h1>这里什么事件都没有哦</h1><br><p>返回以浏览其他事件</p>",
+              headline: "<h1>空</h1><br><h1>None</h1>",
+              text: "<h1>这里什么事件都没有哦</h1><br><h1>There are no events here.</h1><br><p>返回以浏览其他事件</p><br><p>Return to browse other events.</p>",
             },
           },
         ],
@@ -1273,7 +1246,6 @@ WHERE (ParentEvent IS NULL AND ? IS NULL) OR (ParentEvent = ? AND EventID IN (
       res.status(500).send("Internal Server Error");
     }
   });
-
   // 删除路由处理
   app.get("/delete", verifyToken, (req, res) => {
     // 查询数据库中的记录
@@ -1336,7 +1308,6 @@ WHERE (ParentEvent IS NULL AND ? IS NULL) OR (ParentEvent = ? AND EventID IN (
       );
     });
   });
-
   // 添加一个新的路由处理，用于处理删除记录的 POST 请求
   app.post("/deleteRecord", verifyToken, (req, res) => {
     console.log(req.body);
@@ -1454,7 +1425,6 @@ WHERE (ParentEvent IS NULL AND ? IS NULL) OR (ParentEvent = ? AND EventID IN (
       }
     });
   });
-
   // GET路由 - 获取Slides表中的所有记录
   app.get("/Slidesdetails", verifyToken, (req, res) => {
     connection.query("SELECT * FROM slides", (error, slidesResults) => {
@@ -1464,7 +1434,6 @@ WHERE (ParentEvent IS NULL AND ? IS NULL) OR (ParentEvent = ? AND EventID IN (
       });
     });
   });
-
   app.get("/textdetails", verifyToken, (req, res) => {
     connection.query("SELECT * FROM text", (error, textResults) => {
       if (error) throw error;
@@ -1473,7 +1442,6 @@ WHERE (ParentEvent IS NULL AND ? IS NULL) OR (ParentEvent = ? AND EventID IN (
       });
     });
   });
-
   app.get("/eventdetails", verifyToken, (req, res) => {
     connection.query("SELECT * FROM event_details", (error, detailsResults) => {
       if (error) throw error;
@@ -1482,7 +1450,6 @@ WHERE (ParentEvent IS NULL AND ? IS NULL) OR (ParentEvent = ? AND EventID IN (
       });
     });
   });
-
   // POST路由 - 将用户输入插入或更新event_details表
   app.post("/eventdetails", verifyToken, (req, res) => {
     console.log(req.body);
@@ -1531,7 +1498,6 @@ WHERE (ParentEvent IS NULL AND ? IS NULL) OR (ParentEvent = ? AND EventID IN (
       }
     );
   });
-
   // 获取事件数据并构建树形结构
   const getEvents = (callback) => {
     const query = "SELECT * FROM events";
@@ -1567,7 +1533,6 @@ WHERE (ParentEvent IS NULL AND ? IS NULL) OR (ParentEvent = ? AND EventID IN (
       callback(forest);
     });
   };
-
   // GET路由 - 显示事件森林
   app.get("/eventtree", verifyToken, (req, res) => {
     // 查询 slides 表的所有记录的 Slides_unique_id
